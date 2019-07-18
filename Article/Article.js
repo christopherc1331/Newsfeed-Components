@@ -85,6 +85,15 @@ const data = [
     thirdParagraph: `Hodor hodor - hodor... Hodor hodor hodor hodor. Hodor. Hodor! Hodor hodor, hodor hodor hodor hodor hodor; hodor hodor? Hodor!
           Hodor hodor, HODOR hodor, hodor hodor?! Hodor! Hodor hodor, HODOR hodor, hodor hodor, hodor, hodor hodor. Hodor, hodor.
           Hodor. Hodor, hodor, hodor. Hodor hodor... Hodor hodor hodor?! Hodor, hodor... Hodor hodor HODOR hodor, hodor hodor. Hodor.`
+  },
+  {
+    title: "Litify your Spotify playlist!",
+    date: "Jun 17th, 2019",
+    firstParagraph: `womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp womp`,
+
+    secondParagraph: `Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang Gucci gang`,
+
+    thirdParagraph: `Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do when it's all on you? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do when it ain't all about you? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do when it's all on you boy? Boy wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do? Wot u gonna do when it ain't all about you?`
   }
 ];
 
@@ -113,54 +122,62 @@ const data = [
 
 */
 
-class Article {
-  constructor(obj) {
-    this.objContent = obj;
-    this.titleContent = obj.title;
-    this.dateContent = obj.date;
-    this.para1Content = obj.firstParagraph;
-    this.para2Content = obj.secondParagraph;
-    this.para3Content = obj.thirdParagraph;
-    this.parentDiv = document.querySelector(".articles");
-    this.addContent();
+function addArticle(obj) {
+  const titleContent = obj.title;
+  const dateContent = obj.date;
+  const para1Content = obj.firstParagraph;
+  const para2Content = obj.secondParagraph;
+  const para3Content = obj.thirdParagraph;
+  const parentDiv = document.querySelector(".articles");
+
+  function addContent() {
+    const containerDiv = document.createElement("div");
+    containerDiv.classList.add("article");
+
+    const title = document.createElement("h2");
+    title.classList.add("date");
+    title.textContent = titleContent;
+
+    const date = document.createElement("p");
+    date.textContent = dateContent;
+
+    const para1 = document.createElement("p");
+    para1.textContent = para1Content;
+
+    const para2 = document.createElement("p");
+    para2.textContent = para2Content;
+
+    const para3 = document.createElement("p");
+    para3.textContent = para3Content;
+
+    const expandButton = document.createElement("span");
+    expandButton.classList.add("expandButton");
+    expandButton.textContent = "expand";
+    expandButton.addEventListener("click", () => {
+      containerDiv.classList.toggle("article-open");
+      if (expandButton.textContent === "expand") {
+        expandButton.textContent = "collapse";
+      } else {
+        expandButton.textContent = "expand";
+      }
+    });
+
+    function addtoDOM() {
+      parentDiv.appendChild(containerDiv);
+      containerDiv.appendChild(title);
+      containerDiv.appendChild(date);
+      containerDiv.appendChild(para1);
+      containerDiv.appendChild(para2);
+      containerDiv.appendChild(para3);
+      containerDiv.appendChild(expandButton);
+    }
+
+    addtoDOM();
   }
-  addContent() {
-    this.containerDiv = document.createElement("div");
-    this.containerDiv.classList.add("article");
 
-    this.title = document.createElement("h2");
-    this.title.classList.add("date");
-    this.title.textContent = this.titleContent;
-
-    this.date = document.createElement("p");
-    this.date.textContent = this.dateContent;
-
-    this.para1 = document.createElement("p");
-    this.para1.textContent = this.para1Content;
-
-    this.para2 = document.createElement("p");
-    this.para2.textContent = this.para1Content;
-
-    this.para3 = document.createElement("p");
-    this.para3.textContent = this.para1Content;
-
-    this.expandButton = document.createElement("span");
-    this.expandButton.classList.add("expandButton");
-    this.expandButton.textContent = "expand";
-
-    this.addtoDOM();
-  }
-  addtoDOM() {
-    this.parentDiv.appendChild(this.containerDiv);
-    this.containerDiv.appendChild(this.title);
-    this.containerDiv.appendChild(this.date);
-    this.containerDiv.appendChild(this.para1);
-    this.containerDiv.appendChild(this.para2);
-    this.containerDiv.appendChild(this.para3);
-    this.containerDiv.appendChild(this.expandButton);
-  }
+  addContent();
 }
 
-const articles = data.forEach(item => {
-  new Article(item);
+objArticles = data.map(obj => {
+  addArticle(obj);
 });
